@@ -50,11 +50,6 @@ public Comment getcommentById(Integer commentid){
 
 
     }
-//public void  deleteComment(Integer commentid){
-//
-//        commentRepository.deleteById(commentid);
-//}
-
     public void deleteComment(Integer commentid) {
         likeRepository.deleteByCommentId(commentid);
         commentRepository.deleteById(commentid);

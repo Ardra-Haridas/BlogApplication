@@ -1,5 +1,6 @@
 package blog.example.BlogApplication2.Model;
 
+import blog.example.BlogApplication2.Logout.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,11 @@ public class User implements UserDetails {
     private String password;
     private String bio;
     private String profilepicture;
+
+
+
+//@OneToMany(mappedBy = "user")
+//    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,5 +1,8 @@
 package blog.example.BlogApplication2.auth;
 
+import blog.example.BlogApplication2.Logout.Token;
+import blog.example.BlogApplication2.Logout.TokenRepository;
+import blog.example.BlogApplication2.Logout.TokenType;
 import blog.example.BlogApplication2.config.JwtService;
 import blog.example.BlogApplication2.Model.User;
 import blog.example.BlogApplication2.Repository.UserRepository;
@@ -20,6 +23,8 @@ public class AuthenticationService {
     @Autowired
     private final UserRepository repository;
     @Autowired
+    private final TokenRepository tokenRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final JwtService jwtService;
@@ -31,12 +36,26 @@ public class AuthenticationService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        repository.save(user);
+        var savedUser=repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
+
+
+
+//    private void saveUserToken(User user, String jwtToken) {
+//        var token= Token.builder()
+//                .user(user)
+//                .token(jwtToken)
+//                .tokenType(TokenType.BEARER)
+//                .revoked(false)
+//                .expired(false)
+//                .build();
+//        tokenRepository.save(token);
+//    }
 
     public String authenticate(AuthenticationRequest request) {
         try {
@@ -49,11 +68,31 @@ public class AuthenticationService {
             var user = repository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new BadCredentialsException("User not Found"));
             var jwtToken = jwtService.generateToken(user);
+            revokedAllUserTokens(user);
+            saveUserToken(user,jwtToken);
             return jwtToken;
         } catch (AuthenticationException ex) {
             return "Invalid Username or Password!";
         }
     }
-
-
+    private  void revokedAllUserTokens(User user){
+        var validUserTokens =tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(t -> {
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+    private void saveUserToken(User user, String jwtToken) {
+        var token= Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .revoked(false)
+                .expired(false)
+                .build();
+        tokenRepository.save(token);
+    }
 }

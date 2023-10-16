@@ -30,7 +30,7 @@ public class Blogpost {
 
     private String status;
     private String viewcount;
-    private byte[] image;
+    private String image;
     @PrePersist
     protected void onCreate(){
         this.creationdate =new Date();
