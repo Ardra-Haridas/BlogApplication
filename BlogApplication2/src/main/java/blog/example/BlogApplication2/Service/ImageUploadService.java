@@ -1,6 +1,9 @@
 package blog.example.BlogApplication2.Service;
 import blog.example.BlogApplication2.Model.Blogpost;
+import blog.example.BlogApplication2.Model.ProfileResponse;
+import blog.example.BlogApplication2.Model.User;
 import blog.example.BlogApplication2.Repository.PostRepository;
+import blog.example.BlogApplication2.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ public class ImageUploadService {
     @Autowired
     public ImageUploadService(PostRepository postRepository) {
         this.postRepository = postRepository;
+
     }
 
     public void uploadImage(Integer postId, MultipartFile imageFile) {
@@ -49,8 +53,6 @@ public class ImageUploadService {
                 e.printStackTrace();
             }
         }
-
-
-
     }
+
 }

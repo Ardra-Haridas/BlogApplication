@@ -18,15 +18,12 @@ public interface LikeRepository extends JpaRepository<Likes,Integer> {
     @Modifying
     @Query(value = "DELETE FROM Likes l WHERE l.postId = ?1",nativeQuery = true)
     void deleteByPostId(Integer postid);
-@Modifying
-@Transactional
-@Query(value = "DELETE FROM Likes l where l.postid=?1 AND l.userid=?2",nativeQuery = true)
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Likes l where l.postid=?1 AND l.userid=?2",nativeQuery = true)
     void deleteByPostIdAndUserId(Integer postid, Integer userid);
-@Modifying
-@Transactional
-@Query(value = "Delete from Likes l where l.commentid=?1",nativeQuery = true)
-void deleteByCommentId(Integer commentid);
-//    void deleteByCommentIdAndUserId(Integer commentid, Integer userid);
-
-
+    @Modifying
+    @Transactional
+    @Query(value = "Delete from Likes l where l.commentid=?1",nativeQuery = true)
+    void deleteByCommentId(Integer commentid);
 }

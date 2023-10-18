@@ -45,18 +45,6 @@ public class AuthenticationService {
     }
 
 
-
-//    private void saveUserToken(User user, String jwtToken) {
-//        var token= Token.builder()
-//                .user(user)
-//                .token(jwtToken)
-//                .tokenType(TokenType.BEARER)
-//                .revoked(false)
-//                .expired(false)
-//                .build();
-//        tokenRepository.save(token);
-//    }
-
     public String authenticate(AuthenticationRequest request) {
         try {
             authenticationManager.authenticate(

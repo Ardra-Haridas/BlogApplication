@@ -15,7 +15,7 @@ import java.util.Date;
 public class Blogpost {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer postid;
+    private Integer id;
     private String title;
     private String content;
     private Integer userid;

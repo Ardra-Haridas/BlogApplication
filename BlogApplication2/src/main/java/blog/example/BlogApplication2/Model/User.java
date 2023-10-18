@@ -29,10 +29,6 @@ public class User implements UserDetails {
     private String profilepicture;
 
 
-
-//@OneToMany(mappedBy = "user")
-//    private List<Token> tokens;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return  List.of(new SimpleGrantedAuthority("user"));
