@@ -80,6 +80,15 @@ public String unjoinCommunity(Integer userid,Integer communityid){
         return "User is not a member of the Community";
     }
 }
+    public String deleteCommunity(Integer communityId) {
+        if (communityRepository.existsById(communityId)) {
+            communityRepository.deleteById(communityId);
+            communityMappingRepository.deleteByCommunityId(communityId);
+            return "Community deleted successfully";
+        } else {
+            return "Community not found";
+        }
+    }
     }
 
 

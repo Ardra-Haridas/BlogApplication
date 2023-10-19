@@ -38,4 +38,11 @@ public class CommunityController {
     public ResponseEntity<String> unjoinCommunity(@PathVariable(name = "userid") Integer userid,@PathVariable(name = "communityid")Integer communityid){
         return  new ResponseEntity<>(communityService.unjoinCommunity(userid,communityid),HttpStatus.OK);
 }
+    @DeleteMapping("/delete/{communityId}")
+    public ResponseEntity<String> deleteCommunity(@PathVariable(name = "communityId") Integer communityId) {
+        String result = communityService.deleteCommunity(communityId);
+        return ResponseEntity.ok(result);
+    }
+
+
 }

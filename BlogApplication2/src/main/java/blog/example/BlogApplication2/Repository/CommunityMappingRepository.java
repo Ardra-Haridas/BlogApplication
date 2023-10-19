@@ -16,4 +16,12 @@ public interface CommunityMappingRepository extends JpaRepository<Communitymappi
     @Modifying
     @Query(value = "delete from communityusermapping where userid=?1 and communityid=?2",nativeQuery = true)
     void deleteByUserIdAndCommunityId(Integer userid, Integer communityid);
-}
+
+
+        @Transactional
+        @Modifying
+        @Query(value = "delete from communityusermapping where communityid = ?1", nativeQuery = true)
+        void deleteByCommunityId(Integer communityId);
+    }
+
+

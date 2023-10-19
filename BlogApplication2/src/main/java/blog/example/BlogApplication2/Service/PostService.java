@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 
@@ -59,8 +62,11 @@ public class PostService {
     public void uploadImage(Integer postId, MultipartFile imageFile) {
         imageUploadService.uploadImage(postId, imageFile);
     }
-    public String getImageRelativePath(Integer postId) {
-        return "/Users/ardra.h/Downloads/Blog";
+    public byte[] getImageRelativePath(Integer postId) throws IOException {
+        Blogpost blogpost=postRepository.findById(postId).orElse(null);
+        String filepath= "/Users/ardra.h/Downloads/BlogApplication2/BlogApplication2/src/main/java/blog/example/BlogApplication2/Images/"+postId+"/"+blogpost.getImage();
+        byte[] image= Files.readAllBytes(new File(filepath).toPath());
+        return image;
     }
 
 

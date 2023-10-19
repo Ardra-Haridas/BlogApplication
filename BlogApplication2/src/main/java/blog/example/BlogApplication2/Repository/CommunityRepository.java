@@ -10,4 +10,9 @@ public interface CommunityRepository extends JpaRepository<Community,Integer> {
 
   @Query(value = "select count(*) from community where communityname=?",nativeQuery = true)
   Integer existsByCommunityname(String communityname);
-}
+
+    @Query(value = "select count(*) from community where communityid = ?1", nativeQuery = true)
+    Integer existsByCommunityId(Integer communityId);
+  }
+
+

@@ -3,10 +3,13 @@ import blog.example.BlogApplication2.Model.BlogPostHistory;
 import blog.example.BlogApplication2.Service.PostService;
 import blog.example.BlogApplication2.Model.Blogpost;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -59,13 +62,9 @@ public class PostController {
     }
 
     @GetMapping(path = "/getImage/{postid}")
-    public ResponseEntity<String> getImageRelativePath(@PathVariable Integer postid) {
-        String relativePath = postService.getImageRelativePath(postid);
-        if (relativePath != null) {
-            return ResponseEntity.ok(relativePath);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getImageRelativePath(@PathVariable Integer postid) throws IOException {
+         byte[] imageData = postService.getImageRelativePath(postid);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(imageData);
     }
 
     }
