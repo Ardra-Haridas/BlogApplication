@@ -1,7 +1,7 @@
 package blog.example.BlogApplication2.Model;
 
-import blog.example.BlogApplication2.Logout.Token;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +22,13 @@ public class User implements UserDetails {
 @Id
 @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @NotEmpty
+    @Size(min=4,message = "Username must be of 4 characters")
     private String name;
+    @Email(message = "Email Address is not valid!!..")
     private String email;
+    @NotEmpty
+    @Size(min=6,message ="Password Must be min 8 chars!!!")
     private String password;
     private String bio;
     private String profilepicture;

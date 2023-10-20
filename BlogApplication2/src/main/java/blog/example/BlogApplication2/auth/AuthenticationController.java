@@ -1,6 +1,7 @@
 package blog.example.BlogApplication2.auth;
 
 import blog.example.BlogApplication2.Model.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +17,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
     @PostMapping(path = "/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody User user
+         @Valid @RequestBody User user
     ){
         return ResponseEntity.ok(service.register(user));
     }

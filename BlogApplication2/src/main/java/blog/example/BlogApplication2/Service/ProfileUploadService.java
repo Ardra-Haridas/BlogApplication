@@ -41,8 +41,6 @@ public class ProfileUploadService {
                 byte[] bytes = imageFile.getBytes();
                 Files.write(path, bytes);
 
-                String relativePath = userid + "/" + originalFilename;
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -20,14 +20,12 @@ import java.util.UUID;
 public class ImageUploadService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
     @Value("${image.upload.directory}")
     private String uploadDirectory;
     @Autowired
-    public ImageUploadService(PostRepository postRepository,UserRepository userRepository) {
+    public ImageUploadService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.userRepository=userRepository;
 
     }
 
@@ -47,7 +45,6 @@ public class ImageUploadService {
                 byte[] bytes = imageFile.getBytes();
                 Files.write(path, bytes);
 
-                String relativePath = postId + "/" + originalFilename;
 
             } catch (IOException e) {
                 e.printStackTrace();
