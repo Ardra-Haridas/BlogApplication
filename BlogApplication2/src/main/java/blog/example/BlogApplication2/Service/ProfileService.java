@@ -1,5 +1,4 @@
 package blog.example.BlogApplication2.Service;
-
 import blog.example.BlogApplication2.Model.ProfileResponse;
 import blog.example.BlogApplication2.Model.User;
 import blog.example.BlogApplication2.Repository.UserRepository;
@@ -37,6 +36,7 @@ public class ProfileService {
             throw new UsernameNotFoundException("User not found");
         }
     }
+    
     public void uploadImage(Integer userid, MultipartFile imageFile) {
        profileUploadService.uploadImage(userid, imageFile);
     }

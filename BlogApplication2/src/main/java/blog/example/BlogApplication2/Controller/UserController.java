@@ -1,6 +1,5 @@
 package blog.example.BlogApplication2.Controller;
 
-import blog.example.BlogApplication2.Repository.UserRepository;
 import blog.example.BlogApplication2.Service.ProfileService;
 import blog.example.BlogApplication2.Model.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;

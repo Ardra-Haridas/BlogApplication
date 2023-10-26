@@ -16,7 +16,7 @@ public class AuthenticationController {
     @Autowired
     private final AuthenticationService service;
     @PostMapping(path = "/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<Object> register(
          @Valid @RequestBody User user
     ){
         return ResponseEntity.ok(service.register(user));

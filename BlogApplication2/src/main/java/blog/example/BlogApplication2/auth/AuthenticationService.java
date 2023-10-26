@@ -31,22 +31,32 @@ public class AuthenticationService {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(User request) {
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        var savedUser=repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+    public Object register(User request) {
+        if(repository.duplicateExist(request.getUsername(),request.getEmail()).isEmpty()) {
+            User user = new User();
+            user.setName(request.getName());
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            var savedUser = repository.save(user);
+            var jwtToken = jwtService.generateToken(user);
+            saveUserToken(savedUser, jwtToken);
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.setToken(jwtToken);
+            response.setUser(savedUser);
+            return response;
+        }
+        else{
+            return "Duplicate entry!!!!";
+        }
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
     }
 
 
     public String authenticate(AuthenticationRequest request) {
         try {
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
