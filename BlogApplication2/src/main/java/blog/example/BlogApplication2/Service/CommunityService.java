@@ -1,6 +1,4 @@
 package blog.example.BlogApplication2.Service;
-
-
 import blog.example.BlogApplication2.Repository.CommunityMappingRepository;
 import blog.example.BlogApplication2.Repository.CommunityRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
