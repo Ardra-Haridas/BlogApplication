@@ -3,6 +3,7 @@ package blog.example.BlogApplication2.Controller;
 import blog.example.BlogApplication2.Service.CommentService;
 import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Model.CreatecommentRequest;
+import blog.example.BlogApplication2.Util.AppContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,10 @@ public CommentController(CommentService commentService){
     List<Comment> comments= commentService.getAllComments();
     return  ResponseEntity.ok(comments);
 }
+@GetMapping("/getContext")
+    public ResponseEntity<String>getContext(){
+        return  new ResponseEntity<>(AppContext.getEmail(), HttpStatus.OK);
+    }
 @GetMapping("/findbyId")
     public ResponseEntity<Comment>getcommentById(@PathVariable Integer commentid){
     Comment comment=commentService.getcommentById(commentid);

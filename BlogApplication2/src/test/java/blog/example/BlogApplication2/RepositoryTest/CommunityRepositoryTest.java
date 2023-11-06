@@ -1,10 +1,9 @@
-package blog.example.BlogApplication2.Repository;
-
+package blog.example.BlogApplication2.RepositoryTest;
 import blog.example.BlogApplication2.Model.Community;
+import blog.example.BlogApplication2.Repository.CommunityRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;

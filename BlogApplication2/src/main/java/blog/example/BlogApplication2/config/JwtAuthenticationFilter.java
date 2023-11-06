@@ -1,6 +1,7 @@
 package blog.example.BlogApplication2.config;
 
 import blog.example.BlogApplication2.Logout.TokenRepository;
+import blog.example.BlogApplication2.Util.AppContext;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,8 +57,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                       new WebAuthenticationDetailsSource().buildDetails(request)
               );
               SecurityContextHolder.getContext().setAuthentication(authToken);
+              AppContext.setEmail(userEmail);
+
           }
         }
-        filterChain.doFilter(request,response);
+        try{
+            filterChain.doFilter(request,response);
+        }
+        finally {
+            AppContext.clearContext();
+        }
+
+
     }
+
 }

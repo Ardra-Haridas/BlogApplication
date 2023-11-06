@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface LikeRepository extends JpaRepository<Likes,Integer> {
     @Query(value = "SELECT count(*) FROM Likes as l WHERE l.postid = ?1 AND l.userid = ?2",nativeQuery = true)
     Integer existsByPostIdAndUserId(Integer postid, Integer userid);
-    @Query(value = "SELECT count(*) FROM Likes as l WHERE l.commentid = ?1 AND l.userid = ?2",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM Likes as l WHERE l.commentid = ?1 ",nativeQuery = true)
    Integer existsByCommentIdAndUserId(Integer commentid);
     @Modifying
     @Query(value = "DELETE FROM Likes l WHERE l.postId = ?1",nativeQuery = true)

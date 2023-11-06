@@ -1,5 +1,4 @@
 package blog.example.BlogApplication2.Controller;
-import blog.example.BlogApplication2.Model.BlogPostHistory;
 import blog.example.BlogApplication2.Service.PostService;
 import blog.example.BlogApplication2.Model.Blogpost;
 import org.springframework.beans.factory.annotation.Autowired;

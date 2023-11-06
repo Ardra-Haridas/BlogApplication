@@ -1,4 +1,4 @@
-package blog.example.BlogApplication2.Repository;
+package blog.example.BlogApplication2.ControllerTest;
 import blog.example.BlogApplication2.Controller.CommunityController;
 import blog.example.BlogApplication2.Model.Community;
 import blog.example.BlogApplication2.Model.CreateCommunityRequest;

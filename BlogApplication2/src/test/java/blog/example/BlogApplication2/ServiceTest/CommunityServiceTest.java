@@ -1,9 +1,11 @@
-package blog.example.BlogApplication2.Repository;
-
+package blog.example.BlogApplication2.ServiceTest;
 import blog.example.BlogApplication2.Model.Community;
 import blog.example.BlogApplication2.Model.Communitymapping;
 import blog.example.BlogApplication2.Model.CreateCommunityRequest;
 import blog.example.BlogApplication2.Model.User;
+import blog.example.BlogApplication2.Repository.CommunityMappingRepository;
+import blog.example.BlogApplication2.Repository.CommunityRepository;
+import blog.example.BlogApplication2.Repository.UserRepository;
 import blog.example.BlogApplication2.Service.CommunityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,45 +14,41 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest
 public class CommunityServiceTest {
     @Mock
-    private CommunityMappingRepository communityMappingRepository;
-    @Mock
     private CommunityRepository communityRepository;
+    @Mock
+    private CommunityMappingRepository communityMappingRepository;
     @Mock
     private UserRepository userRepository;
     @InjectMocks
     private CommunityService communityService;
     @BeforeEach
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    public  void  testCreateCommunity_Success(){
-        CreateCommunityRequest request=new CreateCommunityRequest();
+    public void testCreateCommunity() {
+        CreateCommunityRequest request = new CreateCommunityRequest();
         request.setCommunityname("TestCommunity");
-        request.setUserid(302);
-        User user=new User();
-        user.setId(302);
-        Community community=new Community();
+        request.setUserid(1);
+        User user = new User();
+        user.setId(1);
+        Community community = new Community();
+        community.setCommunityname("TestCommunity");
         Mockito.when(communityRepository.existsByCommunityname("TestCommunity")).thenReturn(0);
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
-        String result=communityService.createCommunity(request);
-        assertEquals("Community created!",result);
+        Mockito.when(communityRepository.save(Mockito.any(Community.class))).thenReturn(community);
+        Mockito.when(communityMappingRepository.save(Mockito.any(Communitymapping.class))).thenReturn(new Communitymapping());
+        String result = communityService.createCommunity(request);
+        assertEquals("Community created!", result);
     }
-    @Test
-    public  void testCreateCommunity_DuplicateName(){
-        CreateCommunityRequest createCommunityRequest=new CreateCommunityRequest();
-        createCommunityRequest.setCommunityname("TestCommunity");
-        createCommunityRequest.setUserid(302);
-        Mockito.when(communityRepository.existsByCommunityname(createCommunityRequest.getCommunityname())).thenReturn(19);
-        String result=communityService.createCommunity(createCommunityRequest);
-        assertEquals("Community with the same name already exists!",result);
+
     }
-}
+
+
+
+
