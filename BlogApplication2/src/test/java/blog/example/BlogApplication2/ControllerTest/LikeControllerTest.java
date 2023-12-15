@@ -24,7 +24,7 @@ public class LikeControllerTest {
      @Test
      public void testLikepost(){
         when(likeService.likePost(anyInt(),anyInt())).thenReturn("Liked");
-         ResponseEntity<String> response=likeController.likePost(1,1);
+         ResponseEntity<Object> response=likeController.likePost(1,1);
          assertEquals("Liked",response.getBody());
      }
      @Test

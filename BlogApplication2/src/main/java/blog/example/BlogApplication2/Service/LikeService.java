@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+
 @Service
 public class LikeService {
 
@@ -26,7 +28,7 @@ public class LikeService {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
-    public String likePost(Integer postid,Integer userid){
+    public Object likePost(Integer postid,Integer userid){
     if(likeRepository.existsByPostIdAndUserId(postid, userid)!=0){
         return "You've already liked the post";
     }
@@ -39,7 +41,7 @@ public class LikeService {
            likes.setBlogpost(blogpost);
             likes.setLiketime(new Date());
             likeRepository.save(likes);
-            return "you liked the post";
+            return likes;
         }else{
             return "Unable to like post";
         }
@@ -49,7 +51,10 @@ public class LikeService {
             return "You haven't liked the Post";
         }
         likeRepository.deleteByPostIdAndUserId(postid,userid);
-        return "You have unlike the Post";
+        return "success";
+    }
+    public Integer getAllLikesByUserandPost(Integer userid, Integer postid){
+        return likeRepository.findAllByUserIdAndPostId(userid,postid);
     }
     public String likeComment(Integer commentid,Integer userid){
         if(likeRepository.existsByCommentIdAndUserId(commentid)!=0){

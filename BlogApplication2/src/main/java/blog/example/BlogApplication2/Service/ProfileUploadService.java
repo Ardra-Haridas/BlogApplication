@@ -1,8 +1,6 @@
 package blog.example.BlogApplication2.Service;
 
-import blog.example.BlogApplication2.Model.Blogpost;
 import blog.example.BlogApplication2.Model.User;
-import blog.example.BlogApplication2.Repository.PostRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +23,7 @@ public class ProfileUploadService {
         this.userRepository = userRepository;
     }
 
-    public void uploadImage(Integer userid, MultipartFile imageFile) {
+    public String uploadImage(Integer userid, MultipartFile imageFile) {
         String filePath = uploadDirectory + "/"+ userid + "/";
        User user = userRepository.findById(userid).orElse(null);
         if(user!=null){
@@ -45,6 +43,7 @@ public class ProfileUploadService {
                 e.printStackTrace();
             }
         }
+        return filePath;
     }
 
 }

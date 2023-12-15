@@ -1,5 +1,6 @@
 package blog.example.BlogApplication2.Service;
 import blog.example.BlogApplication2.Model.BlogPostHistory;
+import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Repository.BlogPostHistoryRepository;
 import blog.example.BlogApplication2.Repository.LikeRepository;
 import blog.example.BlogApplication2.Repository.PostRepository;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -40,7 +42,10 @@ public class PostService {
 
         return postRepository.findAll();
     }
+    public Blogpost getpostById(Integer postid){
 
+        return postRepository.findById(postid).orElse(null);
+    }
     public Blogpost createBlogpost(Blogpost blogpost) {
 
         return postRepository.save(blogpost);

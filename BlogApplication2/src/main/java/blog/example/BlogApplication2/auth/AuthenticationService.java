@@ -16,6 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
@@ -31,7 +34,8 @@ public class AuthenticationService {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
-    public Object register(User request) {
+    public Map<String,Object> register(User request) {
+        Map<String,Object> res = new HashMap<>();
         if(repository.duplicateExist(request.getUsername(),request.getEmail()).isEmpty()) {
             User user = new User();
             user.setName(request.getName());
@@ -43,10 +47,14 @@ public class AuthenticationService {
             AuthenticationResponse response = new AuthenticationResponse();
             response.setToken(jwtToken);
             response.setUser(savedUser);
-            return response;
+            res.put("response",jwtToken);
+            res.put("status",true);
+            return res;
         }
         else{
-            return "Duplicate entry!!!!";
+            res.put("response","Registration Unsuccessfull!");
+            res.put("status",false);
+            return res;
         }
 //        return AuthenticationResponse.builder()
 //                .token(jwtToken)
@@ -54,7 +62,8 @@ public class AuthenticationService {
     }
 
 
-    public String authenticate(AuthenticationRequest request) {
+    public Map<String,Object> authenticate(AuthenticationRequest request) {
+        Map<String,Object> res = new HashMap<>();
         try {
 
             authenticationManager.authenticate(
@@ -68,9 +77,13 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(user);
             revokedAllUserTokens(user);
             saveUserToken(user,jwtToken);
-            return jwtToken;
+            res.put("response",jwtToken);
+            res.put("status",true);
+            return res;
         } catch (AuthenticationException ex) {
-            return "Invalid Username or Password!";
+            res.put("response","Invalid email or Password!");
+            res.put("status",false);
+            return res;
         }
     }
     private  void revokedAllUserTokens(User user){

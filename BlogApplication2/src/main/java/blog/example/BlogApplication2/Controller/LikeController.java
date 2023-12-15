@@ -1,12 +1,13 @@
 package blog.example.BlogApplication2.Controller;
 
+import blog.example.BlogApplication2.Model.Likes;
 import blog.example.BlogApplication2.Service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/like")
@@ -18,15 +19,18 @@ public class LikeController {
     }
 
     @PostMapping("/likePost/{postid}/{userid}")
-    public ResponseEntity<String>likePost(@PathVariable(name = "postid") Integer postid, @PathVariable(name = "userid") Integer userid){
-    String result =likeService.likePost(postid,userid);
-    return  ResponseEntity.ok(result);
+    public ResponseEntity<Object>likePost(@PathVariable(name = "postid") Integer postid, @PathVariable(name = "userid") Integer userid){
+    return  ResponseEntity.ok(likeService.likePost(postid,userid));
     }
 
     @PostMapping("/unlikePost/{postid}/{userid}")
     public ResponseEntity<String>unlikePost(@PathVariable(name = "postid") Integer postid,@PathVariable(name = "userid") Integer userid){
     String result=likeService.unlikePost(postid,userid);
     return ResponseEntity.ok(result);
+    }
+    @GetMapping("/likebyuser/{userid}/{postid}")
+    public ResponseEntity<Integer> getAllLikesByUserAndPost(@PathVariable Integer userid, @PathVariable Integer postid){
+    return new ResponseEntity<>(likeService.getAllLikesByUserandPost(userid,postid), HttpStatus.OK);
     }
     @PostMapping("/likeComment/{commentid}/{userid}")
     public ResponseEntity<String>likeComment(@PathVariable(name = "commentid") Integer commentid,@PathVariable(name = "userid") Integer userid){

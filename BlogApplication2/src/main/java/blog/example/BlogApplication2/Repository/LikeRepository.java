@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @EnableJpaRepositories
 public interface LikeRepository extends JpaRepository<Likes,Integer> {
@@ -26,4 +28,8 @@ public interface LikeRepository extends JpaRepository<Likes,Integer> {
     @Transactional
     @Query(value = "Delete from Likes l where l.commentid=?1",nativeQuery = true)
     void deleteByCommentId(Integer commentid);
+
+
+    @Query(value = "SELECT count(*) FROM Likes l where l.userid=?1 AND l.postid=?2",nativeQuery = true)
+    Integer findAllByUserIdAndPostId(Integer userid, Integer postid);
 }

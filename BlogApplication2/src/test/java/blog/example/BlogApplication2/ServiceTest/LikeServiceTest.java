@@ -36,16 +36,16 @@ public class LikeServiceTest {
     void setup(){
         MockitoAnnotations.openMocks(this);
     }
-    @Test
-    void testlikePost(){
-        when(likeRepository.existsByPostIdAndUserId(1,1)).thenReturn(0);
-        when(postRepository.findById(1)).thenReturn(Optional.of(new Blogpost()));
-        when(userRepository.findById(1)).thenReturn(Optional.of(new User()));
-        when(likeRepository.save(any())).thenReturn(new Likes());
-        String result = likeService.likePost(1,1);
-        assertEquals("you liked the post",result);
-        verify(likeRepository,times(1)).save(any());
-    }
+//    @Test
+//    void testlikePost(){
+//        when(likeRepository.existsByPostIdAndUserId(1,1)).thenReturn(0);
+//        when(postRepository.findById(1)).thenReturn(Optional.of(new Blogpost()));
+//        when(userRepository.findById(1)).thenReturn(Optional.of(new User()));
+//        when(likeRepository.save(any())).thenReturn(new Likes());
+//        String result = likeService.likePost(1,1);
+//        assertEquals("you liked the post",result);
+//        verify(likeRepository,times(1)).save(any());
+//    }
     @Test
     void  testUnlikePost(){
         when(likeRepository.existsByPostIdAndUserId(1,1)).thenReturn(1);

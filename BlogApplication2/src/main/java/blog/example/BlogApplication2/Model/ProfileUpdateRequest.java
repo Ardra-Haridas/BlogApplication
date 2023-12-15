@@ -4,15 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.web.multipart.MultipartFile;
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileResponse {
-
-    private  String name;
-    private String email;
-    private String bio;
-    private String profilepicture;
+public class ProfileUpdateRequest {
+    private String newname;
+    private String newBio;
+    private MultipartFile newProfilePicture;
 }

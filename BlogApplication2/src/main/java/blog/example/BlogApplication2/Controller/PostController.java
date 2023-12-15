@@ -1,4 +1,5 @@
 package blog.example.BlogApplication2.Controller;
+import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Service.PostService;
 import blog.example.BlogApplication2.Model.Blogpost;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,15 @@ public class PostController {
     public ResponseEntity<List<Blogpost>> getAllBlogposts() {
         List<Blogpost> blogposts = postService.getAllPosts();
         return ResponseEntity.ok(blogposts);
+    }
+    @GetMapping("/findbyId/{postid}")
+    public ResponseEntity<Blogpost>getpostById(@PathVariable Integer postid){
+        Blogpost blogpost=postService.getpostById(postid);
+        if (blogpost!=null){
+            return  new ResponseEntity<>(blogpost, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(path = "/createpost")

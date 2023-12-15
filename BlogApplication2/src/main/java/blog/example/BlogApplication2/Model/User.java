@@ -23,7 +23,7 @@ public class User implements UserDetails {
 @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     @NotEmpty
-    @Size(min=4,message = "Username must be of 4 characters")
+    @Size(min=3,message = "Username must be of 4 characters")
     private String name;
     @EmailValidation(message = "Email Address is not valid!!..")
     private String email;

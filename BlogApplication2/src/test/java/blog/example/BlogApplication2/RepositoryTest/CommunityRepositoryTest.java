@@ -21,19 +21,25 @@ class CommunityRepositoryTest {
 
         Assertions.assertThat(community.getCommunityid()).isGreaterThan(0);
     }
-
-    @Test
-    public void existsByCommunityname() {
-        Community community=new Community();
-        community.setCommunityname("Community91");
-        communityRepository.save(community);
-        Integer count=communityRepository.existsByCommunityname("Community91");
-        assertEquals(2,count);
-    }
-
     @Test
     public void CommunitynotExist(){
         Integer count=communityRepository.existsByCommunityname("NoExistentCommunity");
         assertEquals(0,count);
+    }
+   @Test
+    public void testCommunityExistByCommunityName(){
+        Community community=new Community();
+        community.setCommunityname("TestCommunity");
+        communityRepository.save(community);
+        Integer count =communityRepository.existsByCommunityname("TestCommunity");
+        assertEquals(1,count);
+    }
+    @Test
+    public void testCommunityExistByCommunityId(){
+        Community community=new Community();
+         community.setCommunityname("TestCommunity");
+         communityRepository.save(community);
+         Integer count= communityRepository.existsByCommunityId(community.getCommunityid());
+         assertEquals(1,count);
     }
 }

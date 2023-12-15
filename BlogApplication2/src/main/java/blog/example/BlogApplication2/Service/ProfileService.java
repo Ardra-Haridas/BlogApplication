@@ -1,7 +1,7 @@
 package blog.example.BlogApplication2.Service;
-import blog.example.BlogApplication2.Model.ProfileResponse;
 import blog.example.BlogApplication2.Model.User;
 import blog.example.BlogApplication2.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,21 +22,18 @@ public class ProfileService {
     private final ProfileUploadService profileUploadService;
 
 
-    public ProfileResponse getUserProfile(String userEmail) {
+    public Optional<User> getUserProfile(String userEmail) {
         Optional<User> optionalUser = userRepository.findByEmail(userEmail);
 
+
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return ProfileResponse.builder()
-                    .username(user.getUsername())
-                    .bio(user.getBio())
-                    .profilepicture(user.getProfilepicture())
-                    .build();
+            optionalUser.get().setPassword(null);
+            return optionalUser;
         } else {
             throw new UsernameNotFoundException("User not found");
         }
     }
-    
+
     public void uploadImage(Integer userid, MultipartFile imageFile) {
        profileUploadService.uploadImage(userid, imageFile);
     }
@@ -46,6 +43,23 @@ public class ProfileService {
         byte[]  image = Files.readAllBytes(new File(filepath).toPath());
         return image;
     }
+    @Transactional
+    public Optional<User>updateProfile(Integer userid,String newname, String newBio,MultipartFile newProfilepicture){
+        User user=userRepository.findById(userid).orElseThrow(()->new UsernameNotFoundException("User not fund"));
+        if(newname!=null){
+            user.setName(newname);
+        }
+        if (newBio!=null){
+            user.setBio(newBio);
+        }
+        if (newProfilepicture!=null && !newProfilepicture.isEmpty()){
+            String newProfilePictureFilename= profileUploadService.uploadImage(userid,newProfilepicture);
+            user.setProfilepicture(newProfilePictureFilename);
+        }
+        userRepository.save(user);
+        return Optional.of(user);
+    }
+
 
 }
 
