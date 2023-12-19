@@ -1,5 +1,6 @@
 package blog.example.BlogApplication2.Controller;
 
+import blog.example.BlogApplication2.Model.Blogpost;
 import blog.example.BlogApplication2.Model.ProfileResponse;
 import blog.example.BlogApplication2.Model.ProfileUpdateRequest;
 import blog.example.BlogApplication2.Model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +28,15 @@ public class UserController {
     public Optional<User> getProfileDetails(){
         return profileService.getUserProfile(SecurityContextHolder.getContext().getAuthentication().getName());
 
+    }
+    @GetMapping("/{userid}/blogposts")
+    public ResponseEntity<List<Blogpost>> getAllPostById(@PathVariable Integer userid){
+        List<Blogpost> blogposts=profileService.getAllPostById(userid);
+        if(blogposts!=null){
+            return new ResponseEntity<>(blogposts,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
     @PostMapping(path = "/uploadImage/{userid}")
     public ResponseEntity<String> uploadImage(@PathVariable Integer userid, @RequestParam("imageFile") MultipartFile imageFile) {

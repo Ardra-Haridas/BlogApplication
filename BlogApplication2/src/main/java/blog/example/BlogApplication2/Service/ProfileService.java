@@ -1,5 +1,7 @@
 package blog.example.BlogApplication2.Service;
+import blog.example.BlogApplication2.Model.Blogpost;
 import blog.example.BlogApplication2.Model.User;
+import blog.example.BlogApplication2.Repository.PostRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
+    @Autowired
+    private final PostRepository postRepository;
     @Autowired
     private final UserRepository userRepository;
     @Autowired
@@ -32,6 +37,9 @@ public class ProfileService {
         } else {
             throw new UsernameNotFoundException("User not found");
         }
+    }
+    public List<Blogpost> getAllPostById(Integer userid){
+        return postRepository.findAllById(userid);
     }
 
     public void uploadImage(Integer userid, MultipartFile imageFile) {
@@ -59,6 +67,7 @@ public class ProfileService {
         userRepository.save(user);
         return Optional.of(user);
     }
+
 
 
 }
