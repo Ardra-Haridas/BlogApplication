@@ -29,6 +29,15 @@ public class UserController {
         return profileService.getUserProfile(SecurityContextHolder.getContext().getAuthentication().getName());
 
     }
+    @GetMapping("/userbyId/{userid}")
+    public ResponseEntity<User>getUserById(@PathVariable Integer userid){
+        User user=profileService.getUserById(userid);
+        if (user!=null){
+            return  new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     @GetMapping("/{userid}/blogposts")
     public ResponseEntity<List<Blogpost>> getAllPostById(@PathVariable Integer userid){
         List<Blogpost> blogposts=profileService.getAllPostById(userid);

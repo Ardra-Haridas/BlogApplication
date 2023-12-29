@@ -38,6 +38,9 @@ public class ProfileService {
             throw new UsernameNotFoundException("User not found");
         }
     }
+    public User getUserById(Integer userid){
+        return userRepository.findById(userid).orElse(null);
+    }
     public List<Blogpost> getAllPostById(Integer userid){
         return postRepository.findAllById(userid);
     }

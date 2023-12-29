@@ -8,6 +8,7 @@ import blog.example.BlogApplication2.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,7 +29,17 @@ private final CommentRepository commentRepository;
 public List<Comment>getAllComments(){
     return commentRepository.findAll();
 }
-public Comment getcommentById(Integer commentid){
+public List<Comment> getCommentsByPostId(Integer postid) {
+            Blogpost blogpost = postRepository.findById(postid).orElse(null);
+            if (blogpost != null) {
+                return commentRepository.findByBlogpost(blogpost.getId());
+            } else {
+                return Collections.emptyList();
+            }
+        }
+
+
+    public Comment getcommentById(Integer commentid){
         return commentRepository.findById(commentid).orElse(null);
 }
     public String saveComment(CreatecommentRequest createcommentRequest) {

@@ -26,6 +26,16 @@ public CommentController(CommentService commentService){
     List<Comment> comments= commentService.getAllComments();
     return  ResponseEntity.ok(comments);
 }
+
+    @GetMapping("/commentsByPostId/{postid}")
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Integer postid) {
+        List<Comment> comments = commentService.getCommentsByPostId(postid);
+        if (comments !=null) {
+            return ResponseEntity.ok(comments);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 @GetMapping("/getContext")
     public ResponseEntity<String>getContext(){
         return  new ResponseEntity<>(AppContext.getEmail(), HttpStatus.OK);
