@@ -56,7 +56,7 @@ public class LikeService {
     public Integer getAllLikesByUserandPost(Integer userid, Integer postid){
         return likeRepository.findAllByUserIdAndPostId(userid,postid);
     }
-    public String likeComment(Integer commentid,Integer userid){
+    public Object likeComment(Integer commentid,Integer userid){
         if(likeRepository.existsByCommentIdAndUserId(commentid)!=0){
             return "You've already liked the comment";
         }

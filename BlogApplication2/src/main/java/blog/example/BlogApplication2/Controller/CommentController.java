@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api/v1/comment")
@@ -28,8 +29,8 @@ public CommentController(CommentService commentService){
 }
 
     @GetMapping("/commentsByPostId/{postid}")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Integer postid) {
-        List<Comment> comments = commentService.getCommentsByPostId(postid);
+    public ResponseEntity<List<Map<String,Object>>> getCommentsByPostId(@PathVariable Integer postid) {
+        List<Map<String,Object>> comments = commentService.getCommentsByPostId(postid);
         if (comments !=null) {
             return ResponseEntity.ok(comments);
         } else {

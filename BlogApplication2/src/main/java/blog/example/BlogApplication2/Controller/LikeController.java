@@ -33,9 +33,8 @@ public class LikeController {
     return new ResponseEntity<>(likeService.getAllLikesByUserandPost(userid,postid), HttpStatus.OK);
     }
     @PostMapping("/likeComment/{commentid}/{userid}")
-    public ResponseEntity<String>likeComment(@PathVariable(name = "commentid") Integer commentid,@PathVariable(name = "userid") Integer userid){
-    String result=likeService.likeComment(commentid,userid);
-    return  ResponseEntity.ok(result);
+    public ResponseEntity<Object>likeComment(@PathVariable(name = "commentid") Integer commentid,@PathVariable(name = "userid") Integer userid){
+    return  ResponseEntity.ok(likeService.likeComment(commentid,userid));
     }
 
     @PostMapping("/unlikeComment/{commentid}/{userid}")

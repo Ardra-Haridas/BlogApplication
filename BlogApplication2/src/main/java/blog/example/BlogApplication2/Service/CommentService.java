@@ -5,11 +5,13 @@ import blog.example.BlogApplication2.Repository.LikeRepository;
 import blog.example.BlogApplication2.Repository.PostRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
 import blog.example.BlogApplication2.Model.*;
+import blog.example.BlogApplication2.Util.AppContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentService {
@@ -29,10 +31,11 @@ private final CommentRepository commentRepository;
 public List<Comment>getAllComments(){
     return commentRepository.findAll();
 }
-public List<Comment> getCommentsByPostId(Integer postid) {
+public List<Map<String,Object>> getCommentsByPostId(Integer postid) {
+        User currentUser = userRepository.findByEmail(AppContext.getEmail()).orElse(null);
             Blogpost blogpost = postRepository.findById(postid).orElse(null);
-            if (blogpost != null) {
-                return commentRepository.findByBlogpost(blogpost.getId());
+            if (blogpost != null && currentUser != null) {
+                return commentRepository.findByBlogpost(blogpost.getId(), currentUser.getId());
             } else {
                 return Collections.emptyList();
             }

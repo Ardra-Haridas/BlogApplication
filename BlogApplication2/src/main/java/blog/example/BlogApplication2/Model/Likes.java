@@ -23,7 +23,9 @@ public class Likes {
     private  User user;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "postid")
+
     private Blogpost blogpost;
+    private Integer likecount;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "commentid")
     private  Comment comment;

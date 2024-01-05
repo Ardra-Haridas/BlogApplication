@@ -13,16 +13,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "history")
-public class BlogPostHistory {
+public class History {
 @Id
 @GeneratedValue(strategy = GenerationType.SEQUENCE)
 private  Integer historyid;
-
-private  String newcontent;
-
-private String newimage;
-
-private String newtitle;
+private String oldcontent;
+private String oldtitle;
+private String oldimage;
+private String oldcomment;
+@Enumerated(EnumType.STRING)
+private ChangeType changetype;
 
 @ManyToOne
 @JoinColumn(name = "post_id")

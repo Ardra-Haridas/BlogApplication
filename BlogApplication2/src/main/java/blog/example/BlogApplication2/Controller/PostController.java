@@ -51,13 +51,9 @@ public class PostController {
     }
 
     @DeleteMapping(path = "/delete/{postid}")
-    public ResponseEntity<String> deleteBlogpost(@PathVariable Integer postid) {
-        boolean deleted = postService.deleteBlogpost(postid);
-        if (deleted) {
-            return ResponseEntity.ok("Post Deleted Successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to delete post");
-        }
+    public ResponseEntity<String> deleteBlogpost(@PathVariable Integer postid) throws Exception {
+        postService.deleteBlogpost(postid);
+        return ResponseEntity.badRequest().body("delete post");
     }
 
     @PostMapping(path = "/uploadImage/{postid}")
