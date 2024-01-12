@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class CreateCommunityRequest {
 
     private String communityname;
+    private String description;
+    private String profilepic;
     private Integer userid;
     private Integer membercount;
 }

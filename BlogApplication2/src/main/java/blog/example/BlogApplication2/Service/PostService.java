@@ -1,12 +1,7 @@
 package blog.example.BlogApplication2.Service;
-import blog.example.BlogApplication2.Model.ChangeType;
-import blog.example.BlogApplication2.Model.History;
-import blog.example.BlogApplication2.Repository.HistoryRepository;
-import blog.example.BlogApplication2.Repository.LikeRepository;
-import blog.example.BlogApplication2.Repository.PostRepository;
-import blog.example.BlogApplication2.Model.Blogpost;
+import blog.example.BlogApplication2.Model.*;
+import blog.example.BlogApplication2.Repository.*;
 import jakarta.persistence.PreRemove;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +17,8 @@ public class PostService {
 
     private PostRepository postRepository;
     private LikeRepository likeRepository;
+    private final UserRepository userRepository;
+    private final CommunityRepository communityRepository;
 
     private ImageUploadService imageUploadService;
     private HistoryRepository historyRepository;
@@ -29,10 +26,12 @@ public class PostService {
     @Autowired
     public PostService(PostRepository postRepository,
                        LikeRepository likeRepository,
-                       ImageUploadService imageUploadService,
+                       UserRepository userRepository, CommunityRepository communityRepository, ImageUploadService imageUploadService,
                        HistoryRepository historyRepository) {
         this.postRepository = postRepository;
         this.likeRepository = likeRepository;
+        this.userRepository = userRepository;
+        this.communityRepository = communityRepository;
         this.imageUploadService=imageUploadService;
         this.historyRepository=historyRepository;
 
@@ -46,9 +45,22 @@ public class PostService {
 
         return postRepository.findById(postid).orElse(null);
     }
-    public Blogpost createBlogpost(Blogpost blogpost) {
+    public Blogpost createBlogpost(BlogPostRequest blogPostRequest) {
+        User currentUser = userRepository.findById(blogPostRequest.getUserid()).orElse(null);
+        if (currentUser!=null){
+            Blogpost blogpost = new Blogpost();
+            blogpost.setTitle(blogPostRequest.getTitle());
+            blogpost.setContent(blogPostRequest.getContent());
+            blogpost.setUser(currentUser);
+            if (blogPostRequest.getCommunityid()!=null) {
+                Community community = communityRepository.findById(blogPostRequest.getCommunityid()).orElse(null);
+                blogpost.setCommunity(community);
+            }
+            return postRepository.save(blogpost);
+        }else {
+            throw new RuntimeException();
+        }
 
-        return postRepository.save(blogpost);
     }
 
     @PreRemove
@@ -57,15 +69,11 @@ public class PostService {
             Blogpost deletedPost=postRepository.findById(postid).orElse(null);
             if(deletedPost!=null) {
                 History history = new History();
-                history.setOldcontent(deletedPost.getContent());
-                history.setOldtitle(deletedPost.getTitle());
-                history.setOldimage(deletedPost.getImage());
                 history.setTime(new Date());
                 history.setChangetype(ChangeType.DELETE);
                 history.setBlogpost(deletedPost);
                 historyRepository.save(history);
-                likeRepository.deleteByPostId(postid);
-                postRepository.deleteById(postid);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +91,7 @@ public class PostService {
     }
 
 
-    @Transactional
+
     public Blogpost updateBlogpost(Integer postid, Blogpost updatedPost) {
         Blogpost existingPost = postRepository.findById(postid).orElse(null);
 
@@ -105,4 +113,7 @@ public class PostService {
     }
 
 
+    public List<Blogpost> getAllPostsByCommunityId(Integer communityid) {
+        return postRepository.findByCommunityId(communityid);
+    }
 }

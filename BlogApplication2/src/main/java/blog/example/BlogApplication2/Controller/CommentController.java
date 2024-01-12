@@ -1,5 +1,6 @@
 package blog.example.BlogApplication2.Controller;
 
+import blog.example.BlogApplication2.Model.Blogpost;
 import blog.example.BlogApplication2.Service.CommentService;
 import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Model.CreatecommentRequest;
@@ -55,7 +56,21 @@ public CommentController(CommentService commentService){
     return ResponseEntity.ok(commentService.saveComment(request));
 }
 @DeleteMapping("/deleteComment/{commentid}")
-public void deleteComment(@PathVariable Integer commentid) {
+public ResponseEntity<String> deleteComment(@PathVariable Integer commentid)throws Exception{
     commentService.deleteComment(commentid);
+    return ResponseEntity.badRequest().body("delete comment");
 }
+
+    @PostMapping(path = "/update/{commentid}")
+    public ResponseEntity<?> updateComment(@PathVariable Integer commentid, @RequestBody Comment updatedComment) {
+        Comment updateComment= commentService.updateComment(commentid, updatedComment);
+        if (updateComment != null) {
+            return ResponseEntity.ok("Comment Updated Successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to update comment");
+        }
+    }
 }
+
+
+

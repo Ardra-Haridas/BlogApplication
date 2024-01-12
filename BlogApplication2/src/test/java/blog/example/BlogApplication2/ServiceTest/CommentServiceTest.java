@@ -52,7 +52,7 @@ public class CommentServiceTest {
         assertEquals("comment created!",result);
     }
 @Test
-    public void testDeleteComment(){
+    public void testDeleteComment() throws Exception {
         int commentId =1;
         doNothing().when(likeRepository).deleteByCommentId(commentId);
         doNothing().when(commentRepository).deleteById(commentId);

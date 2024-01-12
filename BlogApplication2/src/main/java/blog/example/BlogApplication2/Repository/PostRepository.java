@@ -14,5 +14,8 @@ public interface PostRepository extends JpaRepository<Blogpost,Integer> {
 
     @Query(value = "SELECT * from blogpost  where userid=?1",nativeQuery = true)
     List<Blogpost> findAllById(Integer userid);
+
+    @Query(value = "SELECT * from blogpost  where communityid=?1",nativeQuery = true)
+    List<Blogpost> findByCommunityId(Integer communityid);
 }
 

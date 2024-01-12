@@ -13,7 +13,7 @@ import java.util.Date;
 public class CreatecommentRequest {
 private  Integer userid;
 private Integer postid;
-private  Comment parentcommentid;
+private  Integer parentcommentid;
 private String content;
 private Date creationdate;
 private Date lastmodifieddate;

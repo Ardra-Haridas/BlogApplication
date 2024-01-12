@@ -1,5 +1,6 @@
 package blog.example.BlogApplication2.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +19,7 @@ import java.util.Date;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
 private Integer commentid;
     @ManyToOne
     @JoinColumn(name = "userid")
@@ -25,6 +29,8 @@ private Integer commentid;
     private Blogpost blogpost;
 
     private String content;
+    @OneToMany(mappedBy = "parentComment",cascade=CascadeType.ALL,orphanRemoval = true)
+    private List<Comment> replies;
 
     @ManyToOne
     @JoinColumn(name = "parentcommentid")
@@ -46,6 +52,7 @@ private Integer commentid;
     protected void onUpdate(){
         this.lastmodifieddate=new Date();
     }
+
 
 
 }

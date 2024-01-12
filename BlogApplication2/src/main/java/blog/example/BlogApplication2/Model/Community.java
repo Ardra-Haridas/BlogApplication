@@ -19,6 +19,8 @@ public class Community {
 @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer communityid;
     private String communityname;
+    private String description;
+    private String profilepic;
     private Integer membercount;
 
     @Temporal(TemporalType.TIMESTAMP)

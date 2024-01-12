@@ -1,4 +1,5 @@
 package blog.example.BlogApplication2.Controller;
+import blog.example.BlogApplication2.Model.BlogPostRequest;
 import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Service.PostService;
 import blog.example.BlogApplication2.Model.Blogpost;
@@ -35,8 +36,8 @@ public class PostController {
     }
 
     @PostMapping(path = "/createpost")
-    public ResponseEntity<Blogpost> createBlogpost(@RequestBody Blogpost blogpost) {
-        Blogpost createdPost = postService.createBlogpost(blogpost);
+    public ResponseEntity<Blogpost> createBlogpost(@RequestBody BlogPostRequest blogPostRequest) {
+        Blogpost createdPost = postService.createBlogpost(blogPostRequest);
         return ResponseEntity.ok(createdPost);
     }
 

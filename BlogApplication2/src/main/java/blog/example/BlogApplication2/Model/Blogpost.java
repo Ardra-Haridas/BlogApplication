@@ -18,7 +18,6 @@ public class Blogpost {
     private Integer id;
     private String title;
     private String content;
-    private Integer userid;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creationdate",nullable = false,updatable = false)
@@ -31,6 +30,12 @@ public class Blogpost {
     private String status;
     private String viewcount;
     private String image;
+    @ManyToOne
+    @JoinColumn(name="communityid")
+    private  Community community;
+    @ManyToOne
+    @JoinColumn(name="userid")
+    private User user;
     @PrePersist
     protected void onCreate(){
         this.creationdate =new Date();

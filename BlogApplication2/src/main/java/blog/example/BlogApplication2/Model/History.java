@@ -27,6 +27,9 @@ private ChangeType changetype;
 @ManyToOne
 @JoinColumn(name = "post_id")
 private  Blogpost blogpost;
+@ManyToOne
+@JoinColumn(name="commentid")
+private  Comment comment;
 
 @Temporal(TemporalType.TIMESTAMP)
 private Date time;

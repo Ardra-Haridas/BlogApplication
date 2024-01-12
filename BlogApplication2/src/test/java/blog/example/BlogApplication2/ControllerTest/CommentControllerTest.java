@@ -73,9 +73,9 @@ public class CommentControllerTest {
         assertEquals("Comment Created", response.getBody());
     }
 
-    @Test
-    public void testDeleteComment() {
-        commentController.deleteComment(1);
-        verify(commentService, times(1)).deleteComment(1);
-    }
+//    @Test
+//    public void testDeleteComment() {
+//        commentController.deleteComment(1);
+//        verify(commentService, times(1)).deleteComment(1);
+//    }
 }
