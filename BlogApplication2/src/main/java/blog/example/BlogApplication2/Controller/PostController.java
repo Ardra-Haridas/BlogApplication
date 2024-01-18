@@ -1,6 +1,5 @@
 package blog.example.BlogApplication2.Controller;
 import blog.example.BlogApplication2.Model.BlogPostRequest;
-import blog.example.BlogApplication2.Model.Comment;
 import blog.example.BlogApplication2.Service.PostService;
 import blog.example.BlogApplication2.Model.Blogpost;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -42,13 +40,9 @@ public class PostController {
     }
 
     @PostMapping(path = "/update/{postid}")
-    public ResponseEntity<?> updateBlogpost(@PathVariable Integer postid, @RequestBody Blogpost updatedBlogpost) {
+    public Blogpost updateBlogpost(@PathVariable Integer postid, @RequestBody Blogpost updatedBlogpost) {
         Blogpost updatePost = postService.updateBlogpost(postid, updatedBlogpost);
-        if (updatePost != null) {
-            return ResponseEntity.ok("Post Updated Successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to update post");
-        }
+        return updatePost;
     }
 
     @DeleteMapping(path = "/delete/{postid}")

@@ -106,7 +106,6 @@ public class PostService {
            historyRepository.save(history);
            existingPost.setTitle(updatedPost.getTitle());
            existingPost.setContent(updatedPost.getContent());
-           existingPost.setImage(updatedPost.getImage());
            return postRepository.save(existingPost);
         }
         return null;

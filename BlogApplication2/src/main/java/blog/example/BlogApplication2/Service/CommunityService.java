@@ -6,8 +6,13 @@ import blog.example.BlogApplication2.Repository.PostRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,13 +22,15 @@ public class CommunityService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostService postService;
+    private final ImageUploadService imageUploadService;
 @Autowired
-    public CommunityService(CommunityRepository communityRepository, CommunityMappingRepository communityMappingRepository, UserRepository userRepository, PostRepository postRepository,PostService postService) {
+    public CommunityService(CommunityRepository communityRepository, CommunityMappingRepository communityMappingRepository, UserRepository userRepository, PostRepository postRepository,PostService postService,ImageUploadService imageUploadService) {
         this.communityRepository = communityRepository;
         this.communityMappingRepository = communityMappingRepository;
         this.userRepository = userRepository;
         this.postRepository=postRepository;
         this.postService=postService;
+        this.imageUploadService=imageUploadService;
     }
 
 
@@ -55,6 +62,15 @@ public class CommunityService {
             return "Community name cannot be empty!";
         }
     }
+    public void communityImage(Integer communityid, MultipartFile imageFile) {
+        imageUploadService.communityImage(communityid, imageFile);
+    }
+    public byte[] getImageRelativePath(Integer communityid) throws IOException {
+        Community community=communityRepository.findById(communityid).orElse(null);
+        String filepath= "/Users/ardra.h/Downloads/BlogApplication2/BlogApplication2/src/main/java/blog/example/BlogApplication2/Images/"+communityid+"/"+community.getProfilepic();
+        byte[] image= Files.readAllBytes(new File(filepath).toPath());
+        return image;
+    }
 
     public String joinCommunity(Integer userid, Integer communityid){
         Integer isMember = communityMappingRepository.existsByUserIdAndCommunityId(userid, communityid);
@@ -76,8 +92,13 @@ public class CommunityService {
     public Integer getAllUserJoinedCommunity(Integer userid, Integer communityid){
     return communityMappingRepository.findAllByUseridAndCommunityid(userid,communityid);
     }
+public List<Map<String,Object>> getAllCommunitiesForUser(Integer userid){
+    return communityMappingRepository.findAllCommunitiesByUserId(userid);
+}
 
-
+public List<Map<String,Object>> getAllCommunitiesNotJoinedByUser(Integer userid){
+    return communityMappingRepository.findAllCommunitiesNotByUserId(userid);
+}
     public List<Blogpost> getAllPostbyCommunityId(Integer communityid){
     return postService.getAllPostsByCommunityId(communityid);
     }

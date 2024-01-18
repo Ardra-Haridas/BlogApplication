@@ -7,10 +7,14 @@ import blog.example.BlogApplication2.Model.Community;
 import blog.example.BlogApplication2.Model.CreateCommunityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -55,6 +59,16 @@ public class CommunityController {
     public ResponseEntity<Integer> getAllUserJoinedCommunity(@PathVariable Integer userid, @PathVariable Integer communityid){
         return new ResponseEntity<>(communityService.getAllUserJoinedCommunity(userid,communityid), HttpStatus.OK);
     }
+    @GetMapping("/joinedCommunities/{userid}")
+    public ResponseEntity<List<Map<String,Object>>>getAllCommunitiesForUser(@PathVariable Integer userid){
+        List<Map<String,Object>> userCommunities=communityService.getAllCommunitiesForUser(userid);
+        return ResponseEntity.ok(userCommunities);
+    }
+    @ GetMapping("/unjoinedCommunity/{userid}")
+    public ResponseEntity<List<Map<String,Object>>>getAllCommunitiesNotJoinedByUser(@PathVariable Integer userid){
+        List<Map<String,Object>> userCommunities=communityService.getAllCommunitiesNotJoinedByUser(userid);
+        return ResponseEntity.ok(userCommunities);
+    }
 
     @GetMapping("/{communityid}/posts")
     public ResponseEntity<List<Blogpost>> getAllPostbyCommunityId(@PathVariable Integer communityid){
@@ -69,6 +83,21 @@ public class CommunityController {
     public ResponseEntity<String> deleteCommunity(@PathVariable(name = "communityId") Integer communityId) {
         String result = communityService.deleteCommunity(communityId);
         return ResponseEntity.ok(result);
+    }
+    @PostMapping(path = "/communityImage/{communityid}")
+    public ResponseEntity<String> communityImage(@PathVariable Integer communityid, @RequestParam("imageFile") MultipartFile imageFile) {
+        try {
+            communityService.communityImage(communityid, imageFile);
+            return ResponseEntity.ok("Image uploaded successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to upload image: " + e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/getcommunityImage/{communityid}")
+    public ResponseEntity<?> getImageRelativePath(@PathVariable Integer communityid) throws IOException {
+        byte[] imageData = communityService.getImageRelativePath(communityid);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/png")).body(imageData);
     }
 
 
