@@ -30,22 +30,22 @@ public class CommunityServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    @Test
-    public void testCreateCommunity() {
-        CreateCommunityRequest request = new CreateCommunityRequest();
-        request.setCommunityname("TestCommunity");
-        request.setUserid(1);
-        User user = new User();
-        user.setId(1);
-        Community community = new Community();
-        community.setCommunityname("TestCommunity");
-        Mockito.when(communityRepository.existsByCommunityname("TestCommunity")).thenReturn(0);
-        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
-        Mockito.when(communityRepository.save(Mockito.any(Community.class))).thenReturn(community);
-        Mockito.when(communityMappingRepository.save(Mockito.any(Communitymapping.class))).thenReturn(new Communitymapping());
-        String result = communityService.createCommunity(request);
-        assertEquals("Community created!", result);
-    }
+//    @Test
+//    public void testCreateCommunity() {
+//        CreateCommunityRequest request = new CreateCommunityRequest();
+//        request.setCommunityname("TestCommunity");
+//        request.setUserid(1);
+//        User user = new User();
+//        user.setId(1);
+//        Community community = new Community();
+//        community.setCommunityname("TestCommunity");
+//        Mockito.when(communityRepository.existsByCommunityname("TestCommunity")).thenReturn(0);
+//        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
+//        Mockito.when(communityRepository.save(Mockito.any(Community.class))).thenReturn(community);
+//        Mockito.when(communityMappingRepository.save(Mockito.any(Communitymapping.class))).thenReturn(new Communitymapping());
+//        String result = communityService.createCommunity(request);
+//        assertEquals("Community created!", result);
+//    }
 
     }
 

@@ -5,6 +5,7 @@ import blog.example.BlogApplication2.Repository.CommunityRepository;
 import blog.example.BlogApplication2.Repository.PostRepository;
 import blog.example.BlogApplication2.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,25 +42,25 @@ public class CommunityService {
     public Optional<Community> getCommunityById(Integer communityid) {
         return communityRepository.findById(communityid);
     }
-    public String createCommunity(CreateCommunityRequest createCommunityRequest) {
+    public Community createCommunity(CreateCommunityRequest createCommunityRequest) {
         if (createCommunityRequest.getCommunityname() != null && !createCommunityRequest.getCommunityname().isEmpty()) {
             if (communityRepository.existsByCommunityname(createCommunityRequest.getCommunityname())!=0) {
-                return "Community with the same name already exists!";
+                throw new RuntimeException("Community with the same name already exists!");
             } else {
                 Community community = new Community();
                 community.setCommunityname(createCommunityRequest.getCommunityname());
                 community.setDescription(createCommunityRequest.getDescription());
                 community.setMembercount(0);
-                communityRepository.save(community);
+                Community community1 =  communityRepository.save(community);
                 Communitymapping communitymapping=new Communitymapping();
                 User user = userRepository.findById(createCommunityRequest.getUserid()).orElse(null);
                 communitymapping.setUser(user);
-                communitymapping.setCommunity(community);
+                communitymapping.setCommunity(community1);
                 communityMappingRepository.save(communitymapping);
-                return "Community created!";
+                return community1;
             }
         } else {
-            return "Community name cannot be empty!";
+            throw new RuntimeException("Community name cannot be empty!");
         }
     }
     public void communityImage(Integer communityid, MultipartFile imageFile) {
@@ -117,6 +118,21 @@ public String unjoinCommunity(Integer userid,Integer communityid){
         return "User is not a member of the Community";
     }
 }
+//public Optional<Community>updateCommunity(Integer newcommunityid,String newcommunityname, String newdescription,MultipartFile newProfilepicture){
+//    User user=userRepository.findById(newcommunityid).orElseThrow(()->new UsernameNotFoundException("Community not fund"));
+//    if(newcommunityname!=null){
+//        user.setName(newcommunityname);
+//    }
+//    if (newdescription!=null){
+//        user.setBio(newdescription);
+//    }
+//    if (newProfilepicture!=null && !newProfilepicture.isEmpty()){
+//        String newProfilePictureFilename= profileUploadService.uploadImage(newcommunityid,newProfilepicture);
+//        user.setProfilepicture(newProfilePictureFilename);
+//    }
+//    userRepository.save(user);
+//    return Optional.of(user);
+//}
     public String deleteCommunity(Integer communityId) {
         if (communityRepository.existsById(communityId)) {
             communityRepository.deleteById(communityId);

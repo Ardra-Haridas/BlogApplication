@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf-> csrf.disable())
                 .authorizeHttpRequests(auth->auth
-                 .requestMatchers("/api/v1/auth/**","/api/v1/post/getImage/**").permitAll()
+                 .requestMatchers("/api/v1/auth/**","/api/v1/post/getImage/**","/api/v1/community/getcommunityImage/**").permitAll()
                  .anyRequest()
                  .authenticated())
                 .sessionManagement(sess-> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

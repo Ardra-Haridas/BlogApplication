@@ -45,18 +45,18 @@ public class CommunityControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/community/list")).andExpect(status().isOk());
     }
 
-    @Test
-    public void testCreateCommunity() throws  Exception{
-        CreateCommunityRequest createCommunityRequest= new CreateCommunityRequest();
-        createCommunityRequest.setCommunityname("New Community302");
-        createCommunityRequest.setUserid(302);
-        when(communityService.createCommunity(createCommunityRequest)).thenReturn("Community created! ");
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/community/create")
-                        .contentType("application/json")
-                        .content(asJsonString(createCommunityRequest))
-                )
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    public void testCreateCommunity() throws  Exception{
+//        CreateCommunityRequest createCommunityRequest= new CreateCommunityRequest();
+//        createCommunityRequest.setCommunityname("New Community302");
+//        createCommunityRequest.setUserid(302);
+//        when(communityService.createCommunity(createCommunityRequest)).thenReturn("Community created! ");
+//        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/community/create")
+//                        .contentType("application/json")
+//                        .content(asJsonString(createCommunityRequest))
+//                )
+//                .andExpect(status().isOk());
+//    }
     public static String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();

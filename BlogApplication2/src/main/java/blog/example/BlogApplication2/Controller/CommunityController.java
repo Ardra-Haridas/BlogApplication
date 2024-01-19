@@ -30,9 +30,9 @@ public class CommunityController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createCommunity(@RequestBody CreateCommunityRequest request) {
-        String createdCommunity = communityService.createCommunity(request);
-        return ResponseEntity.ok(createdCommunity);
+    public ResponseEntity<Community> createCommunity(@RequestBody CreateCommunityRequest request) {
+
+        return ResponseEntity.ok(communityService.createCommunity(request));
     }
     @GetMapping("/list")
     public ResponseEntity<List<Community>> getAllCommunities(){
